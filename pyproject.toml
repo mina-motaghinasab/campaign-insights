@@ -1,7 +1,7 @@
 [project]
 name = "campaign-insights"
 version = "0.1.0"
-description = "Add your description here"
+description = "Analyse Facebook ad campaign performance and get budget recommendations"
 readme = "README.md"
 authors = [
     { name = "mina-motaghinasab", email = "m.mottaghinasab@gmail.com" }
