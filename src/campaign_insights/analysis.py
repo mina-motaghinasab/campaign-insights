@@ -54,8 +54,7 @@ def recommend(totals, campaigns, order_value):
 
         if ads < MIN_ADS_FOR_RELIABLE_RESULT:
             messages.append(
-                f"{campaign.name} has only {ads} ads, "
-                "so its results are less reliable."
+                f"{campaign.name} has only {ads} ads, so its results are less reliable."
             )
         else:
             reliable_roas[campaign.name] = campaign_roas

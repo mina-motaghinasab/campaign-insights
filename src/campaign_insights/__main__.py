@@ -53,9 +53,7 @@ def main():
         print(f"Error: {error}")
         return
 
-    df["ctr"] = df.apply(
-        lambda row: ctr(row["clicks"], row["impressions"]), axis=1
-    )
+    df["ctr"] = df.apply(lambda row: ctr(row["clicks"], row["impressions"]), axis=1)
 
     totals = summarize_by_campaign(df)
     campaigns = build_campaigns(totals)
