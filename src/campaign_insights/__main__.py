@@ -63,7 +63,7 @@ def main():
     print()
     print(f"Recommendations (order value: {args.order_value:.2f})")
     print("-" * 40)
-    for message in recommend(totals, campaigns, args.order_value):
+    for message in recommend(campaigns, args.order_value):
         print(f"- {message}")
 
     output_dir = Path(args.output_dir)
