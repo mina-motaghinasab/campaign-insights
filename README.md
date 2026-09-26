@@ -44,9 +44,9 @@ uv run -m campaign_insights data/facebook_ads.csv --order-value 70
 ```
 Campaign summary
 ----------------------------------------
-Campaign 916: CTR=0.02%, Conversion Rate=21.24%, CPA=6.24
-Campaign 936: CTR=0.02%, Conversion Rate=9.22%, CPA=15.81
-Campaign 1178: CTR=0.02%, Conversion Rate=2.42%, CPA=63.83
+Campaign 916: CTR=0.0234%, Conversion Rate=21.24%, CPA=6.24
+Campaign 936: CTR=0.0244%, Conversion Rate=9.22%, CPA=15.81
+Campaign 1178: CTR=0.0176%, Conversion Rate=2.42%, CPA=63.83
 
 Recommendations (order value: 50.00)
 ----------------------------------------
@@ -74,7 +74,7 @@ for campaign in campaigns:
 
 ## Charts
 
-**Average click-through rate by campaign**
+**Click-through rate by campaign** (from summed clicks and impressions)
 
 ![Average CTR by campaign](outputs/ctr_by_campaign.png)
 

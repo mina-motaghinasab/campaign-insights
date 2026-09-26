@@ -20,7 +20,7 @@ class Campaign:
 
     def summary(self):
         return (
-            f"{self.name}: CTR={self.click_through_rate():.2f}%, "
+            f"{self.name}: CTR={self.click_through_rate():.4f}%, "
             f"Conversion Rate={self.conversion_rate():.2f}%"
         )
 
@@ -46,3 +46,4 @@ class OrganicCampaign(Campaign):
     def summary(self):
         base = super().summary()
         return f"{base}, Spend=0 (organic)"
+    

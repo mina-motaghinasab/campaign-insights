@@ -3,15 +3,20 @@
 import matplotlib.pyplot as plt
 
 
-def plot_ctr_by_campaign(df, output_path):
-    """Bar chart of average CTR per campaign, saved to output_path."""
-    grouped = df.groupby("campaign_id")["ctr"].mean()
+def plot_ctr_by_campaign(campaigns, output_path):
+    """Bar chart of each campaign's CTR, saved to output_path.
+
+    The CTR comes from the campaign's summed clicks and impressions,
+    the same numbers used in the printed summary.
+    """
+    names = [campaign.name for campaign in campaigns]
+    values = [campaign.click_through_rate() for campaign in campaigns]
 
     fig, ax = plt.subplots()
-    grouped.plot(kind="bar", ax=ax)
-    ax.set_xlabel("Campaign ID")
-    ax.set_ylabel("Average CTR (%)")
-    ax.set_title("Average Click-Through Rate by Campaign")
+    ax.bar(names, values)
+    ax.set_xlabel("Campaign")
+    ax.set_ylabel("CTR (%)")
+    ax.set_title("Click-Through Rate by Campaign")
     fig.tight_layout()
     fig.savefig(output_path)
     plt.close(fig)

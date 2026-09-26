@@ -13,7 +13,6 @@ from campaign_insights.analysis import (
     summarize_by_campaign,
 )
 from campaign_insights.loader import load_campaign_data
-from campaign_insights.metrics import ctr
 from campaign_insights.plotting import (
     plot_ctr_by_campaign,
     plot_spend_vs_purchases,
@@ -53,8 +52,6 @@ def main():
         print(f"Error: {error}")
         return
 
-    df["ctr"] = df.apply(lambda row: ctr(row["clicks"], row["impressions"]), axis=1)
-
     totals = summarize_by_campaign(df)
     campaigns = build_campaigns(totals)
 
@@ -71,7 +68,7 @@ def main():
 
     output_dir = Path(args.output_dir)
     output_dir.mkdir(exist_ok=True)
-    plot_ctr_by_campaign(df, output_dir / "ctr_by_campaign.png")
+    plot_ctr_by_campaign(campaigns, output_dir / "ctr_by_campaign.png")
     plot_spend_vs_purchases(df, output_dir / "spend_vs_purchases.png")
     print()
     print(f"Charts saved to {output_dir}/")
