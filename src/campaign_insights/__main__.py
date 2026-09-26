@@ -5,6 +5,7 @@ Usage:
 """
 
 import argparse
+import sys
 from pathlib import Path
 
 from campaign_insights.analysis import (
@@ -36,7 +37,12 @@ def parse_arguments():
         default="outputs",
         help="folder where charts are saved (default: outputs)",
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+
+    if args.order_value <= 0:
+        parser.error("--order-value must be greater than 0")
+
+    return args
 
 
 def main():
@@ -46,11 +52,11 @@ def main():
     try:
         df = load_campaign_data(args.csv_path)
     except FileNotFoundError:
-        print(f"Error: file not found: {args.csv_path}")
-        return
+        print(f"Error: file not found: {args.csv_path}", file=sys.stderr)
+        sys.exit(1)
     except ValueError as error:
-        print(f"Error: {error}")
-        return
+        print(f"Error: {error}", file=sys.stderr)
+        sys.exit(1)
 
     totals = summarize_by_campaign(df)
     campaigns = build_campaigns(totals)
@@ -59,6 +65,7 @@ def main():
     print("-" * 40)
     for campaign in campaigns:
         print(campaign.summary())
+    print("Money values are in the dataset's currency, which is not specified.")
 
     print()
     print(f"Recommendations (order value: {args.order_value:.2f})")
@@ -67,7 +74,7 @@ def main():
         print(f"- {message}")
 
     output_dir = Path(args.output_dir)
-    output_dir.mkdir(exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
     plot_ctr_by_campaign(campaigns, output_dir / "ctr_by_campaign.png")
     plot_spend_vs_purchases(df, output_dir / "spend_vs_purchases.png")
     print()
