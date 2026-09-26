@@ -46,4 +46,3 @@ class OrganicCampaign(Campaign):
     def summary(self):
         base = super().summary()
         return f"{base}, Spend=0 (organic)"
-    
