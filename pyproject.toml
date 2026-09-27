@@ -12,11 +12,15 @@ dependencies = [
     "pandas>=2.3.3",
 ]
 
+[project.scripts]
+campaign-insights = "campaign_insights.__main__:main"
+
 [build-system]
 requires = ["uv_build>=0.12.18,<0.13.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
+    "pytest>=9.1.1",
     "ruff>=0.16.9",
 ]
