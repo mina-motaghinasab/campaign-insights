@@ -7,6 +7,7 @@ from campaign_insights.metrics import (
     format_value,
     purchases_per_100_clicks,
     roas,
+    wilson_interval,
 )
 
 
@@ -30,11 +31,23 @@ class Campaign:
     def approval_rate(self):
         return approval_rate(self.purchases, self.enquiries)
 
+    def approval_interval(self):
+        """95% confidence interval of the approval rate, or None."""
+        return wilson_interval(self.purchases, self.enquiries)
+
+    def approval_interval_text(self):
+        interval = self.approval_interval()
+        if interval is None:
+            return "n/a"
+        low, high = interval
+        return f"{format_value(low)}-{format_value(high)}%"
+
     def summary(self):
         return (
             f"{self.name}: CTR={format_value(self.click_through_rate(), 4)}%, "
             f"Purchases per 100 clicks={format_value(self.purchases_per_100_clicks())}, "
-            f"Approval rate={format_value(self.approval_rate())}%"
+            f"Approval rate={format_value(self.approval_rate())}% "
+            f"(95% CI {self.approval_interval_text()})"
         )
 
 

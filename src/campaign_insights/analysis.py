@@ -31,6 +31,27 @@ def build_campaigns(totals):
     return campaigns
 
 
+def intervals_overlap(first, second):
+    """Return True if two (low, high) intervals share any values."""
+    return first[0] <= second[1] and second[0] <= first[1]
+
+
+def compare_approval(small, reference):
+    """Explain whether a small campaign's approval rate differs clearly."""
+    small_interval = small.approval_interval()
+    reference_interval = reference.approval_interval()
+    if small_interval is None or reference_interval is None:
+        return None
+
+    first = f"{small.name}'s approval rate (95% CI {small.approval_interval_text()})"
+    second = f"{reference.name}'s ({reference.approval_interval_text()})"
+    if intervals_overlap(small_interval, reference_interval):
+        return f"{first} overlaps with {second}, so there is no clear difference."
+    if small_interval[0] > reference_interval[1]:
+        return f"{first} is clearly higher than {second}."
+    return f"{first} is clearly lower than {second}."
+
+
 def recommend(campaigns, order_value):
     """Return a list of plain-English recommendations.
 
@@ -39,6 +60,7 @@ def recommend(campaigns, order_value):
     """
     messages = []
     reliable = []
+    unreliable = []
 
     for campaign in campaigns:
         campaign_roas = campaign.return_on_ad_spend(order_value)
@@ -59,11 +81,20 @@ def recommend(campaigns, order_value):
                 f"{campaign.name} has only {campaign.purchases} purchases, "
                 "so its results are not reliable."
             )
+            unreliable.append(campaign)
         elif campaign_roas is not None:
             reliable.append(campaign)
 
+    if not reliable:
+        return messages
+
+    best = max(reliable, key=lambda c: c.return_on_ad_spend(order_value))
+    for campaign in unreliable:
+        comparison = compare_approval(campaign, best)
+        if comparison is not None:
+            messages.append(comparison)
+
     if len(reliable) >= 2:
-        best = max(reliable, key=lambda c: c.return_on_ad_spend(order_value))
         worst = min(reliable, key=lambda c: c.return_on_ad_spend(order_value))
         if worst.return_on_ad_spend(order_value) < 1:
             messages.append(

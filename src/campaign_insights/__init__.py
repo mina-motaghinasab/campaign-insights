@@ -14,6 +14,7 @@ from campaign_insights.metrics import (
     format_value,
     purchases_per_100_clicks,
     roas,
+    wilson_interval,
 )
 from campaign_insights.plotting import (
     plot_ctr_by_campaign,
@@ -36,4 +37,5 @@ __all__ = [
     "recommend",
     "roas",
     "summarize_by_campaign",
+    "wilson_interval",
 ]

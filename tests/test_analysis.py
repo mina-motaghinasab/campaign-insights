@@ -2,7 +2,7 @@
 
 import pytest
 
-from campaign_insights.analysis import recommend
+from campaign_insights.analysis import intervals_overlap, recommend
 from campaign_insights.campaigns import PaidCampaign
 from campaign_insights.loader import load_campaign_data
 
@@ -61,3 +61,8 @@ def test_loader_rejects_missing_columns(tmp_path):
     csv_file.write_text("xyz_campaign_id,Impressions\n1,100\n")
     with pytest.raises(ValueError, match="Missing required columns"):
         load_campaign_data(csv_file)
+
+
+def test_intervals_overlap():
+    assert intervals_overlap((10, 20), (15, 25))
+    assert not intervals_overlap((10, 20), (21, 30))

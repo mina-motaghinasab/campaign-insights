@@ -1,5 +1,7 @@
 """Tests for the KPI functions in metrics.py."""
 
+import pytest
+
 from campaign_insights.metrics import (
     approval_rate,
     cpa,
@@ -7,6 +9,7 @@ from campaign_insights.metrics import (
     format_value,
     purchases_per_100_clicks,
     roas,
+    wilson_interval,
 )
 
 
@@ -49,3 +52,13 @@ def test_roas_without_spend_is_none():
 def test_format_value():
     assert format_value(1.23456, 4) == "1.2346"
     assert format_value(None) == "n/a"
+
+
+def test_wilson_interval():
+    low, high = wilson_interval(successes=24, trials=58)
+    assert low == pytest.approx(29.63, abs=0.01)
+    assert high == pytest.approx(54.20, abs=0.01)
+
+
+def test_wilson_interval_without_trials_is_none():
+    assert wilson_interval(successes=0, trials=0) is None

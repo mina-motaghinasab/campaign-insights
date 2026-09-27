@@ -4,6 +4,8 @@ Every ratio returns None when it cannot be calculated (for example a CPA
 with zero purchases), so that "no data" is never mistaken for a real value.
 """
 
+from math import sqrt
+
 
 def ctr(clicks, impressions):
     """Click-through rate: clicks per 100 impressions."""
@@ -42,6 +44,20 @@ def roas(revenue, spent):
     if spent == 0:
         return None
     return revenue / spent
+
+
+def wilson_interval(successes, trials, z=1.96):
+    """95% Wilson confidence interval for a proportion, in percent.
+
+    Returns a (low, high) tuple, or None if there are no trials.
+    """
+    if trials == 0:
+        return None
+    p = successes / trials
+    denominator = 1 + z**2 / trials
+    centre = (p + z**2 / (2 * trials)) / denominator
+    margin = z * sqrt(p * (1 - p) / trials + z**2 / (4 * trials**2)) / denominator
+    return (centre - margin) * 100, (centre + margin) * 100
 
 
 def format_value(value, decimals=2):
