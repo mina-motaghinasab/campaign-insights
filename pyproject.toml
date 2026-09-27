@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Analyse Facebook ad campaign performance and get budget recommendations"
 readme = "README.md"
 authors = [
-    { name = "mina-motaghinasab", email = "m.mottaghinasab@gmail.com" }
+    { name = "Mina Motaghinasab", email = "m.mottaghinasab@gmail.com" }
 ]
 requires-python = ">=3.10"
 dependencies = [
